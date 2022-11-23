@@ -1,0 +1,27 @@
+version: "3.5"
+
+services:
+  homebox:
+    image: ghcr.io/hay-kot/homebox:latest
+    container_name: homebox
+    restart: always
+    environment:
+    - HBOX_LOG_LEVEL=info
+    - HBOX_LOG_FORMAT=text
+    - HBOX_WEB_MAX_UPLOAD_SIZE=10
+    volumes:
+      - ./data:/data/
+    labels:
+      traefik.enable: true
+      traefik.http.routers.homebox.rule: Host(`homebox.$DOMAIN`)
+      traefik.http.routers.homebox.tls: true      
+      traefik.http.routers.homebox.entryPoints: https
+      traefik.http.routers.homebox.middlewares: oauth@file      
+      traefik.http.routers.homebox.service: homebox
+      traefik.http.services.homebox.loadbalancer.server.port: 7745
+    networks:
+      proxy:
+
+networks:
+  proxy:
+    external: true

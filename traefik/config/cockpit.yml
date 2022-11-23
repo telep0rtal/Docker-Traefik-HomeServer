@@ -1,0 +1,19 @@
+http:
+
+  routers:
+    cockpit:
+      entryPoints:
+        - https
+      rule: 'Host(`admin.example.com`)'
+      service: cockpit
+      middlewares:
+        - "oauth@file"
+        - "securityHeaders@file"
+        - "rateLimit@file"
+        - "compressGzip@file"
+    
+  services:
+    cockpit:
+      loadBalancer:
+        servers:
+          - url: https://<host-ip-address>:9090

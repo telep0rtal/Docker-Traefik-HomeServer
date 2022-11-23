@@ -1,0 +1,19 @@
+http:
+  routers:
+    vscode:
+      entryPoints:
+        - https
+      rule: 'Host(`vscode.example.com`)'
+      service: vscode
+      middlewares:
+        - "oauth@file"
+        - "securityHeaders@file"
+        - "rateLimit@file"
+        - "compressGzip@file"
+    
+  services:
+    vscode:
+      loadBalancer:
+        passHostHeader: true
+        servers:
+          - url: http://<host-ip-address>:8443

@@ -1,0 +1,29 @@
+version: '3.5'
+
+services:
+  
+  overseerr:
+    image: lscr.io/linuxserver/overseerr:latest
+    container_name: overseerr
+    restart: unless-stopped
+    volumes:
+      - ./config:/config    
+    environment:
+      PUID: $PUID
+      PGID: $PGID
+      TZ: $TZ
+      TP_THEME: $THEME
+      DOCKER_MODS: ghcr.io/gilbn/theme.park:overseerr
+    labels:
+      traefik.enable: true
+      traefik.http.routers.overseerr.entryPoints: https
+      traefik.http.routers.overseerr.rule: Host(`request.$DOMAIN`) || Host(`requests.$DOMAIN`)      
+      traefik.http.routers.overseerr.tls: true        
+      traefik.http.routers.overseerr.service: overseerr
+      traefik.http.services.overseerr.loadbalancer.server.port: 5055
+    networks:
+      proxy-net:
+
+networks:
+  proxy-net:
+    external: true

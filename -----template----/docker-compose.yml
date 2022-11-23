@@ -1,0 +1,43 @@
+version: '3.5'
+
+services:
+  
+  APPNAME:
+    image:
+    container_name: APPNAME
+    restart: unless-stopped
+    env_file: APPNAME.env  
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - $PWD:/config
+      - $MEDIA:$MEDIA
+      - $USENET:$USENET
+      - $TORRENTS:$TORRENTS
+    environment:
+      TZ: $TZ
+      PUID: $PUID
+      PGID: $PGID
+#     Theme.Park.dev {Requires linuxserver.io containers}       
+#      TP_THEME: ${THEME} # change in global.env file for global theme changes
+#      DOCKER_MODS: ghcr.io/gilbn/theme.park:APPNAME
+# If docker socket volume needed, use below instead of mounting volume and also attach to socket-network as well
+#      DOCKER_HOST: dockersocket
+    labels:
+      traefik.enable: true
+      traefik.subdomain: APPNAME    
+      traefik.http.routers.APPNAME.entryPoints: https
+      traefik.http.routers.APPNAME.tls: true        
+      traefik.http.routers.APPNAME.service: APPNAME
+#      traefik.http.services.APPNAME.loadbalancer.server.port: APP_PORT # Only necessary if multiple ports
+    networks:
+      proxy-net:
+      socket-net:
+
+networks:
+  proxy-net:
+    external: true
+  socket-net:
+    external: true
+  db-net: 
+    external: true

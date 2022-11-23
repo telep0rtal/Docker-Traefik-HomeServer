@@ -1,0 +1,34 @@
+# Finds similar media to add to plex library
+
+version: '3.5'
+
+services:
+
+  gaps:
+    image: housewrecker/gaps:latest
+    container_name: gaps
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true     
+    expose:
+      - "32400"       
+    volumes:
+      - ./config:/usr/data
+    environment:
+      TZ: $TZ
+      PUID: $PUID
+      PGID: $PGID
+    labels:
+      traefik.enable: true
+      traefik.http.routers.gaps.rule: Host(`gaps.$DOMAIN`)
+      traefik.http.routers.gaps.tls: true      
+      traefik.http.routers.gaps.entryPoints: https
+      traefik.http.routers.gaps.middlewares: oauth@file      
+      traefik.http.routers.gaps.service: gaps
+      traefik.http.services.gaps.loadbalancer.server.port: 8484
+    networks:
+      proxy:
+
+networks:
+  proxy:
+    external: true            

@@ -1,0 +1,35 @@
+version: '3.9'
+
+services:
+
+  flaresolverr:
+    image: flaresolverr/flaresolverr:latest 
+    container_name: flaresolverr    
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      PGID: $PGID
+      PUID: $PUID
+      TZ: $TZ
+      UMASK: $UMASK
+      LOG_LEVEL: info
+      LOG_HTML: false
+      CAPTCHA_SOLVER: none
+    volumes:
+      - ./config:/home/flaresolverr:rw
+      - /etc/localtime:/etc/localtime:ro
+    labels:
+      traefik.enable: true
+      traefik.http.routers.flaresolverr.entrypoints: https
+      traefik.http.routers.flaresolverr.rule: Host(`flare.$DOMAIN`)
+      traefik.http.routers.flaresolverr.tls: true
+      traefik.http.routers.flaresolverr.middlewares: oauth@file
+      traefik.http.routers.flaresolverr.service: flaresolverr
+      traefik.http.services.flaresolverr.loadbalancer.server.port: 8191
+    networks:
+      proxy:
+
+networks:
+  proxy:
+    external: true

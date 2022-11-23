@@ -1,0 +1,68 @@
+version: '3.5'
+
+services:
+
+  traefik:
+    image: traefik:2.6
+    container_name: traefik
+    restart: unless-stopped
+    env_file: cloudflare.env  
+    ports:
+      - target: 80
+        published: 80
+        protocol: tcp
+        mode: host
+      - target: 443
+        published: 443
+        protocol: tcp
+        mode: host
+    volumes:
+      - $PWD:/etc/traefik
+    depends_on:
+      - dockersocket      
+    environment:
+      DOCKER_HOST: dockersocket    
+    labels:
+      traefik.enable: true
+      traefik.http.routers.traefik.tls: true        
+      traefik.http.routers.traefik.entryPoints: https
+      traefik.http.routers.traefik.rule: Host(`traefik.$DOMAIN`)         
+      traefik.http.routers.traefik.service: api@internal
+    networks:
+      proxy:
+      socket:      
+
+
+  oauth:
+    image: thomseddon/traefik-forward-auth:latest
+    container_name: oauth
+    restart: always
+    env_file: oauth.env     
+    security_opt:
+      - no-new-privileges:true   
+    environment:
+      CONFIG: /config
+      COOKIE_DOMAIN: $DOMAIN
+      INSECURE_COOKIE: false
+      AUTH_HOST: oauth.$DOMAIN
+      URL_PATH: /_oauth
+      LOG_LEVEL: warn
+      LOG_FORMAT: text
+      LIFETIME: 604800 # one week
+      DEFAULT_ACTION: auth
+      DEFAULT_PROVIDER: google
+    labels:
+      traefik.enable: true
+      traefik.http.routers.oauth.tls: true
+      traefik.http.routers.oauth.entrypoints: https
+      traefik.http.routers.oauth.middlewares: oauth@file      
+      traefik.http.routers.oauth.rule: Host(`oauth.$DOMAIN`)
+      traefik.http.services.oauth.loadbalancer.server.port: 4181
+    networks:
+      proxy:
+ 
+networks:
+  proxy:
+    external: true
+  socket:
+    external: true     
