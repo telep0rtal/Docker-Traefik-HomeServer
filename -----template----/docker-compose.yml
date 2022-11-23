@@ -21,23 +21,23 @@ services:
 #     Theme.Park.dev {Requires linuxserver.io containers}       
 #      TP_THEME: ${THEME} # change in global.env file for global theme changes
 #      DOCKER_MODS: ghcr.io/gilbn/theme.park:APPNAME
-# If docker socket volume needed, use below instead of mounting volume and also attach to socket-network as well
+# If docker socket volume needed, use below instead of mounting volume and also attach to socket network as well
 #      DOCKER_HOST: dockersocket
     labels:
       traefik.enable: true
-      traefik.subdomain: APPNAME    
-      traefik.http.routers.APPNAME.entryPoints: https
-      traefik.http.routers.APPNAME.tls: true        
-      traefik.http.routers.APPNAME.service: APPNAME
-#      traefik.http.services.APPNAME.loadbalancer.server.port: APP_PORT # Only necessary if multiple ports
+      traefik.http.routers.audiobookshelf.rule: Host(`audible.$DOMAIN`)
+      traefik.http.routers.audiobookshelf.tls: true      
+      traefik.http.routers.audiobookshelf.entryPoints: https
+      traefik.http.routers.audiobookshelf.middlewares: oauth@file      
+      traefik.http.routers.audiobookshelf.service: audiobookshelf
+      traefik.http.services.audiobookshelf.loadbalancer.server.port: 80
     networks:
-      proxy-net:
-      socket-net:
+      proxy:
 
 networks:
-  proxy-net:
+  proxy:
     external: true
-  socket-net:
+  socket:
     external: true
-  db-net: 
+  internal: 
     external: true
