@@ -17,15 +17,14 @@ services:
         protocol: tcp
         mode: host
     volumes:
-      - $PWD:/etc/traefik
-    depends_on:
-      - dockersocket      
+      - $PWD:/etc/traefik    
     environment:
       DOCKER_HOST: dockersocket    
     labels:
       traefik.enable: true
       traefik.http.routers.traefik.tls: true        
       traefik.http.routers.traefik.entryPoints: https
+      traefik.http.routers.traefik.middlewares: oauth@file        
       traefik.http.routers.traefik.rule: Host(`traefik.$DOMAIN`)         
       traefik.http.routers.traefik.service: api@internal
     networks:
@@ -46,7 +45,7 @@ services:
       INSECURE_COOKIE: false
       AUTH_HOST: oauth.$DOMAIN
       URL_PATH: /_oauth
-      LOG_LEVEL: warn
+      LOG_LEVEL: debug # trace|debug|info|warn|error|fatal|panic
       LOG_FORMAT: text
       LIFETIME: 604800 # one week
       DEFAULT_ACTION: auth

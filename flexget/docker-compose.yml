@@ -1,0 +1,29 @@
+services:
+  flexget:
+    image: ghcr.io/flexget/flexget
+    container_name: flexget
+    commands:
+      - daemon
+      - start
+      - --autoreload-config
+    volumes:
+      - ./config:/config
+      - $TORRENTS:/downloads               
+    environment:
+      TZ: $TZ
+      PGID: $PGID
+      PUID: $PUID
+    labels:
+      traefik.enable: true
+      traefik.http.routers.flexget.rule: Host(`flex.$DOMAIN`)
+      traefik.http.routers.flexget.tls: true      
+      traefik.http.routers.flexget.entryPoints: https
+      traefik.http.routers.flexget.middlewares: oauth@file      
+      traefik.http.routers.flexget.service: flexget
+      traefik.http.services.flexget.loadbalancer.server.port: 5050
+    networks:
+      proxy:
+
+networks:
+  proxy:
+    external: true      

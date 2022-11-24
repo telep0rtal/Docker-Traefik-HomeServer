@@ -1,0 +1,27 @@
+services:
+
+  yacht:
+    image: selfhostedpro/yacht  
+    container_name: yacht
+    restart: unless-stopped
+    volumes:
+      - ./config:/config
+      - ./compose:/config/compose
+    environment:
+      DOCKER_HOST: tcp://dockersocket:2375
+    labels:
+      traefik.enable: true
+      traefik.http.routers.yacht.tls: true
+      traefik.http.routers.yacht.entrypoints: https
+      traefik.http.routers.yacht.middlewares: oauth@file      
+      traefik.http.routers.yacht.rule: Host(`yacht.$DOMAIN`)
+      traefik.http.services.yacht.loadbalancer.server.port: 8000
+    networks:
+      proxy:
+      socket:
+ 
+networks:
+  proxy:
+    external: true
+  socket:
+    external: true      

@@ -2,9 +2,6 @@ global:
   checkNewVersion: true
   sendAnonymousUsage: false
 
-#serversTransport:
-#  insecureSkipVerify: true
-
 entryPoints:
   http:
     address: :80
@@ -63,7 +60,7 @@ providers:
 
   docker:
     watch: true
-    network: proxy-net
+    network: proxy
     defaultRule: "Host(`{{ index .Labels \"com.docker.compose.service\"}}.example.com`)"
     exposedByDefault: false
     endpoint: "tcp://dockersocket:2375"
