@@ -9,16 +9,12 @@ http:
         average: 100
         burst: 50
 
-    # Authelia
-    auth:
-      forwardauth:
-        address: http://auth:9091/api/verify?rd=https://auth.domain.com/
+    oauth:
+      forwardAuth:
+        address: "http://oauth:4181"
         trustForwardHeader: true
         authResponseHeaders:
-          - Remote-User
-          - Remote-Groups
-          - Remote-Name
-          - Remote-Email
+          - "X-Forwarded-User"
 
     # Security headers
     securityHeaders:
