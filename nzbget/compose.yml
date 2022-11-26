@@ -1,0 +1,37 @@
+#
+# NZB Usenet Downloader
+#
+services:
+  
+  nzbget:
+    image: lscr.io/linuxserver/nzbget:latest
+    container_name: nzbget
+    hostname: nzbget
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - ./config:/config
+      - $USENET:$USENET
+    environment:
+      TZ: $TZ
+      PUID: $PUID
+      PGID: $PGID
+      TP_THEME: $THEME
+      DOCKER_MODS: ghcr.io/gilbn/theme.park:Nzbget
+      NZBGET_USER: nzbget # ChangeMe
+      NZBGET_PASS: tegbzn6789 #ChangeMe
+    labels:
+      traefik.enable: true
+      traefik.http.routers.nzbget.rule: Host(`nzbget.$DOMAIN`)
+      traefik.http.routers.nzbget.tls: true      
+      traefik.http.routers.nzbget.entryPoints: https
+      traefik.http.routers.nzbget.middlewares: oauth@file      
+      traefik.http.routers.nzbget.service: nzbget
+      traefik.http.services.nzbget.loadbalancer.server.port: 6789
+    networks:
+      proxy:
+
+networks:
+  proxy:
+    external: true      

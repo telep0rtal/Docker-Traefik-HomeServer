@@ -1,8 +1,8 @@
 #
 #
 #
-
 services:
+
   nextcloud:
     image: nextcloud/all-in-one:latest
     container_name: nextcloud-aio-mastercontainer
@@ -20,6 +20,10 @@ services:
       NEXTCLOUD_TRUSTED_DOMAINS: cloud.$DOMAIN       
     networks:
       proxy:
+
+networks:
+  proxy:
+    external: true
 
 volumes:
   nextcloud_aio_mastercontainer:

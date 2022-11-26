@@ -1,4 +1,6 @@
-version: '3.5'
+#
+# Requesting Content Gets forwarded to Radarr and Sonarr
+#
 
 services:
   
