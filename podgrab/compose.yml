@@ -1,0 +1,30 @@
+#
+# Podgrab is a is a self-hosted podcast manager which automatically downloads latest podcast episode
+#
+services:
+  podgrab:
+    image: akhilrex/podgrab
+    container_name: podgrab
+    hostname: podgrab
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true    
+    volumes:
+      - ./config:/config
+      - ./assets:/assets
+    environment:
+      CHECK_FREQUENCY: 240
+    labels:
+      traefik.enable: true
+      traefik.http.routers.podgrab.rule: Host(`podcasts.$DOMAIN`)
+      traefik.http.routers.podgrab.tls: true      
+      traefik.http.routers.podgrab.entryPoints: https
+      traefik.http.routers.podgrab.middlewares: oauth@file      
+      traefik.http.routers.podgrab.service: podgrab
+      traefik.http.services.podgrab.loadbalancer.server.port: 8080
+    networks:
+      proxy:
+
+networks:
+  proxy:
+    external: true      

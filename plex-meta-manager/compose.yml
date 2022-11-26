@@ -1,0 +1,32 @@
+#
+# Plex Meta Manager  - Automatic Metadata Manager for Plex
+#
+services:
+
+  plexmeta:
+    image: meisnate12/plex-meta-manager
+    container_name: plexmeta
+    hostname: plexmeta
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - ./config:/config
+      - ./assets:/assets
+      - ./metadata:metadata
+      - ./overlays:/overlays
+    environment:
+      TZ: $TZ
+      PUID: $PUID
+      PGID: $PGID
+      PMM_CONFIG: /config/config.yml
+      PMM_TIME: 03:00
+      PMM_RUN: false 
+      PMM_TEST: true
+      PMM_NO_MISSING: false
+    networks:
+      internal:
+
+networks:
+  internal:
+    external: true
