@@ -1,0 +1,33 @@
+http:
+  routers:
+    nextcloud:
+      entryPoints:
+        - https
+      rule: 'Host(`cloud.example.com`)'
+      service: nextcloud
+      middlewares:
+        - "nextRedirect@file"
+        - "nextHeaders@file"
+        - "rateLimit@file"
+
+  middlewares:
+    nextHeaders:
+      headers:
+        sslRedirect: true      
+        referrerPolicy: "same-origin"
+        hostsProxyHeaders: ["X-Forwarded-Host"]
+        customResponseHeaders:
+          X-Robots-Tag: "none"
+ 
+    nextRedirect:
+      redirectRegex:
+        permanent: true
+        regex: "https://(.*)/.well-known/(card|cal)dav"
+        replacement: "https://${1}/remote.php/dav/"
+
+  services:
+    nextcloud:
+      loadBalancer:
+        passHostHeader: true
+        servers:
+          - url: http://nextcloud:11000        

@@ -1,10 +1,13 @@
-version: '3.5'
-
+#
+#   Docker socket proxy to add an extra layer between internet accessible applications
+#   and the docker.socket
+#
 services:
 
   dockersocket:
     image: tecnativa/docker-socket-proxy  
     container_name: dockersocket
+    hostname: dockersocket
     restart: unless-stopped
     privileged: true        
     volumes:
@@ -38,10 +41,13 @@ services:
       VOLUMES: 1
     networks:
       socket:
-
+#
+#   Docker Cleanup Container. 
+#
   dockergc:
     image: clockworksoul/docker-gc-cron:latest
     container_name: dockergc
+    hostname: dockergc
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true   

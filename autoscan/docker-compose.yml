@@ -1,5 +1,6 @@
-version: "3.9"
-
+#
+#  Autoscan replaces the default Plex behaviour for picking up file system changes in near real-time without relying on the file system.
+#
 services:
 
   autoscan:

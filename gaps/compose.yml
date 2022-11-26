@@ -1,12 +1,13 @@
-# Finds similar media to add to plex library
-
-version: '3.5'
+# 
+#  Goes through your plex library and suggests similar/related content that you are missing
+#
 
 services:
 
   gaps:
     image: housewrecker/gaps:latest
     container_name: gaps
+    hostname: gaps
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true     

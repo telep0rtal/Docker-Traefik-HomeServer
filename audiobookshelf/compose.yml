@@ -1,10 +1,9 @@
-version: '3.5'
-
 services:
   
   audiobookshelf:
     image: ghcr.io/advplyr/audiobookshelf:latest
     container_name: audiobookshelf
+    hostname: audiobookshelf
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true

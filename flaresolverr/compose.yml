@@ -1,10 +1,13 @@
-version: '3.9'
+#
+# FlareSolverr is a proxy server to bypass Cloudflare and DDoS-GUARD protection
+#
 
 services:
 
   flaresolverr:
     image: flaresolverr/flaresolverr:latest 
-    container_name: flaresolverr    
+    container_name: flaresolverr
+    hostname: flaresolverr   
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
@@ -18,7 +21,6 @@ services:
       CAPTCHA_SOLVER: none
     volumes:
       - ./config:/home/flaresolverr:rw
-      - /etc/localtime:/etc/localtime:ro
     labels:
       traefik.enable: true
       traefik.http.routers.flaresolverr.entrypoints: https

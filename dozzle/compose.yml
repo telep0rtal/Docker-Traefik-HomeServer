@@ -1,10 +1,13 @@
-version: '3.5'
+#
+# View logs of Docker Containers
+#
 
 services:
   
   dozzle:
     image: amir20/dozzle:latest
     container_name: dozzle
+    hostname: dozzle
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true

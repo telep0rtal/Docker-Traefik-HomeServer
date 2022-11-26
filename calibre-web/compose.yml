@@ -1,24 +1,27 @@
-version: '3.5'
-
+#
+# Basically Plex for Ebooks
+#
 services:
 
-  calibre-web:
+  calibre:
     image: linuxserver/calibre-web
-    container_name: calibre-web
+    container_name: calibre
+    hostname: calibre
     restart: unless-stopped    
     volumes:
       - ./config:/config
-      - /storage:/storage
+      - $MEDIA:$MEDIA
     environment:
       PUID: $PUID
       PGID: $PGID
       TZ: $TZ
-      DOCKER_MODS: linuxserver/calibre-web:calibre      
+      UMASK: $UMASK
+      DOCKER_MODS: linuxserver/calibre-web:calibre|ghcr.io/gilbn/theme.park:calibre     
     labels:
       traefik.enable: true
       traefik.http.routers.calibre.tls: true
       traefik.http.routers.calibre.entrypoints: https      
-      traefik.http.routers.calibre.rule: Host(`books.$DOMAIN`)
+      traefik.http.routers.calibre.rule: Host(`ebooks.$DOMAIN`)
       traefik.http.middlewares.calibre-headers.headers.customrequestheaders.X-Scheme: https
       traefik.http.routers.calibre.middlewares: calibre-headers
       traefik.http.routers.calibre.service: calibre

@@ -1,0 +1,37 @@
+#
+# Jellyfin - Plex Alternative
+#
+services:
+
+  jellyfin:
+    image: lscr.io/linuxserver/jellyfin:latest
+    container_name: jellyfin
+    hostname: jellyfin
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    devices:
+      - /dev/dri:/dev/dri    
+    volumes:
+      - ./config:/config
+      - $MEDIA:$MEDIA
+    environment:
+      TZ: $TZ
+      PUID: $PUID
+      PGID: $PGID
+      JELLYFIN_PublishedServerUrl: jelly.$DOMAIN
+      DOCKER_MODS: linuxserver/mods:jellyfin-opencl-intel
+    labels:
+      traefik.enable: true
+      traefik.http.routers.jellyfin.rule: Host(`jelly.$DOMAIN`)
+      traefik.http.routers.jellyfin.tls: true      
+      traefik.http.routers.jellyfin.entryPoints: https
+      traefik.http.routers.jellyfin.middlewares: oauth@file      
+      traefik.http.routers.jellyfin.service: jellyfin
+      traefik.http.services.jellyfin.loadbalancer.server.port: 8096
+    networks:
+      proxy:
+
+networks:
+  proxy:
+    external: true      

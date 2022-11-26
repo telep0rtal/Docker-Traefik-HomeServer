@@ -1,6 +1,10 @@
-version: "3.5"
+#
+# Homebox is the inventory and organization system built for the Home User
+# https://github.com/hay-kot/homebox
+#
 
 services:
+
   homebox:
     image: ghcr.io/hay-kot/homebox:latest
     container_name: homebox

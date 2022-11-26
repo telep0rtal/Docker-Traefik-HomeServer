@@ -1,0 +1,38 @@
+#
+#  Mealie is a self hosted recipe manager and meal planner
+#
+services:
+
+  mealie:
+    image: hkotel/mealie:latest
+    container_name: mealie
+    hostname: mealie
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - ./data:/app/data
+    environment:
+      TZ: $TZ
+      PUID: $PUID
+      PGID: $PGID
+      RECIPE_PUBLIC: 'true'
+      RECIPE_SHOW_NUTRITION: 'true'
+      RECIPE_SHOW_ASSETS: 'true'
+      RECIPE_LANDSCAPE_VIEW: 'true'
+      RECIPE_DISABLE_COMMENTS: 'false'
+      RECIPE_DISABLE_AMOUNT: 'false'
+    labels:
+      traefik.enable: true
+      traefik.http.routers.mealie.rule: Host(`mealie.$DOMAIN`)
+      traefik.http.routers.mealie.tls: true      
+      traefik.http.routers.mealie.entryPoints: https
+      traefik.http.routers.mealie.middlewares: oauth@file      
+      traefik.http.routers.mealie.service: mealie
+      traefik.http.services.mealie.loadbalancer.server.port: 80
+    networks:
+      proxy:
+
+networks:
+  proxy:
+    external: true      

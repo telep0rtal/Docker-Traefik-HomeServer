@@ -7,7 +7,7 @@ http:
       rule: 'Host(`admin.example.com`)'
       service: cockpit
       middlewares:
-        - "oauth@file"
+  #      - "oauth@file"
         - "securityHeaders@file"
         - "rateLimit@file"
         - "compressGzip@file"
@@ -16,4 +16,4 @@ http:
     cockpit:
       loadBalancer:
         servers:
-          - url: https://<host-ip-address>:9090
+          - url: http://<host-ip-address>:9090

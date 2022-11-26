@@ -1,6 +1,12 @@
+#
+#  FlexGet is a multipurpose automation tool for all of your media
+#  https://flexget.com/
+#
+
 services:
+
   flexget:
-    image: ghcr.io/flexget/flexget
+    image: wiserain/flexget
     container_name: flexget
     commands:
       - daemon
@@ -8,7 +14,7 @@ services:
       - --autoreload-config
     volumes:
       - ./config:/config
-      - $TORRENTS:/downloads               
+      - $TORRENTS:$TORRENTS              
     environment:
       TZ: $TZ
       PGID: $PGID

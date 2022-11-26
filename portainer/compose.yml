@@ -1,0 +1,35 @@
+#
+#     Portainer. Docker Management
+#
+services:
+
+  portainer:
+    image: portainer/portainer-ce:latest    
+    container_name: portainer
+    hostname: portainer
+    restart: unless-stopped
+    command: -H tcp://dockersocket:2375
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - ./config:/data
+    environment:
+      TZ: $TZ
+      DOCKER_HOST: dockersocket:2375
+    labels:
+      traefik.enable: true
+      traefik.http.routers.audiobookshelf.tls: true         
+      traefik.http.routers.portainer.entrypoints: https
+      traefik.http.routers.portainer.rule: Host(`docker.$DOMAINNAME`)
+      traefik.http.routers.portainer.middlewares: chain-oauth@file
+      traefik.http.routers.portainer.service: portainer
+      traefik.http.services.portainer.loadbalancer.server.port: 9000
+    networks:
+      proxy:
+      socket:
+
+networks:
+  proxy:
+    external: true
+  socket:
+    external: true           

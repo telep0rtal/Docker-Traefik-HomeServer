@@ -1,0 +1,35 @@
+#
+# 
+#
+services:
+
+  lidarr:
+    image: lscr.io/linuxserver/lidarr:latest
+    container_name: lidarr
+    hostname: lidarr
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - ./config:/config
+      - $MEDIA:$MEDIA        
+    environment:
+      TZ: $TZ
+      PUID: $PUID
+      PGID: $PGID
+      TP_THEME: $THEME
+      DOCKER_MODS: linuxserver/mods:lidarr-flac2mp3|ghcr.io/gilbn/theme.park:lidarr
+    labels:
+      traefik.enable: true
+      traefik.http.routers.lidarr.rule: Host(`lidarr.$DOMAIN`)
+      traefik.http.routers.lidarr.tls: true      
+      traefik.http.routers.lidarr.entryPoints: https
+      traefik.http.routers.lidarr.middlewares: oauth@file      
+      traefik.http.routers.lidarr.service: lidarr
+      traefik.http.services.lidarr.loadbalancer.server.port: 80
+    networks:
+      proxy:
+
+networks:
+  proxy:
+    external: true      
