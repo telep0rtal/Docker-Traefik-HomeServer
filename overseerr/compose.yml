@@ -24,8 +24,8 @@ services:
       traefik.http.routers.overseerr.service: overseerr
       traefik.http.services.overseerr.loadbalancer.server.port: 5055
     networks:
-      proxy-net:
+      proxy:
 
 networks:
-  proxy-net:
+  proxy:
     external: true

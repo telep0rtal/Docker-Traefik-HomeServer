@@ -12,9 +12,6 @@ services:
       - no-new-privileges:true
     volumes:
       - ./config:/config
-      - ./assets:/assets
-      - ./metadata:metadata
-      - ./overlays:/overlays
     environment:
       TZ: $TZ
       PUID: $PUID
@@ -22,11 +19,11 @@ services:
       PMM_CONFIG: /config/config.yml
       PMM_TIME: 03:00
       PMM_RUN: false 
-      PMM_TEST: true
+      PMM_TEST: false
       PMM_NO_MISSING: false
     networks:
-      internal:
+      proxy:
 
 networks:
-  internal:
+  proxy:
     external: true

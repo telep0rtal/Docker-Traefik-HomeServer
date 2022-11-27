@@ -12,7 +12,7 @@ services:
     security_opt:
       - no-new-privileges:true
     environment:
-      DOCKER_HOST: dockersocket
+      DOCKER_HOST: tcp://dockersocket:2375
     labels:
       traefik.enable: true  
       traefik.http.routers.dozzle.entryPoints: https

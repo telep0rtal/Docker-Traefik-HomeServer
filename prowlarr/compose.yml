@@ -4,7 +4,7 @@
 services:
   
   prowlarr:
-    image:  lscr.io/linuxserver/prowlarr:latest
+    image:  lscr.io/linuxserver/prowlarr:develop
     container_name: prowlarr
     hostname: prowlarr
     restart: unless-stopped

@@ -20,9 +20,7 @@ services:
     image: tiredofit/traefik-cloudflare-companion:latest  
     container_name: cloudflare
     restart: always       
-    env_file: cloudflare.env       
-    depends_on:
-      - traefik
+    env_file: cloudflare.env
     security_opt:
       - no-new-privileges:true   
     environment:
@@ -37,7 +35,7 @@ services:
       SWARM_MODE: false
     labels:  
 #     For Non-Docker/Host Apps
-      traefik.http.routers.cloudflare.rule=HostHeader(`admin.$DOMAIN`) || HostHeader(`vscode.$DOMAIN`)"
+      traefik.http.routers.cloudflare.rule: HostHeader(`admin.$DOMAIN`) || HostHeader(`vscode.$DOMAIN`)"
     networks:
       proxy:
       socket: 

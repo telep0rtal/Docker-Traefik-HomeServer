@@ -8,10 +8,8 @@ services:
   flexget:
     image: wiserain/flexget
     container_name: flexget
-    commands:
-      - daemon
-      - start
-      - --autoreload-config
+    hostname: flexget
+    restart: unless-stopped
     volumes:
       - ./config:/config
       - $TORRENTS:$TORRENTS              

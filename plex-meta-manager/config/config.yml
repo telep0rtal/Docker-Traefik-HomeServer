@@ -1,0 +1,93 @@
+libraries:              # Library mappings must have a colon (:) placed after them
+
+  Movies:
+    metadata_path:
+      - file: config/Movies.yml
+      - git: meisnate12/MovieCharts
+      - git: meisnate12/Studios
+      - git: meisnate12/IMDBGenres
+      - git: meisnate12/People
+
+  TV:
+    metadata_path:
+      - file: config/TV.yml
+      - git: meisnate12/ShowCharts
+      - git: meisnate12/Networks
+
+settings:
+  cache: true
+  cache_expiration: 60
+  asset_directory: config/assets
+  asset_folders: true
+  assets_for_all: false
+  sync_mode: append
+  show_unmanaged: true
+  show_filtered: false
+  show_missing: true
+  save_missing: true
+  run_again_delay: 2
+  missing_only_released: false
+  create_asset_folders: false
+  collection_minimum: 1
+  delete_below_minimum: false
+  tvdb_language: default
+  show_missing_assets: true
+
+plex:     
+  url: http://192.168.1.200:32400
+  token: #####################
+  timeout: 60
+  clean_bundles: false
+  empty_trash: false
+  optimize: false
+
+tmdb:
+  apikey: #####################
+  language: en
+
+tautulli: 
+  url: http://192.168.1.200:8181
+  apikey: #####################
+
+radarr:   
+  url: http://192.168.1.200:7878
+  token: #####################
+  version: v3
+  add: false
+  root_folder_path: /data/media/movies
+  monitor: true
+  availability: announced
+  quality_profile: HD - 720p/1080p
+  tag:
+  search: false
+  add_existing: false
+
+sonarr:    
+  url: http://192.168.1.200:8989
+  token: #####################
+  version: v3
+  add: false
+  root_folder_path: /data/media/tv
+  monitor: all
+  quality_profile: Any
+  language_profile: English
+  series_type: standard
+  season_folder: true
+  tag:
+  search: false
+  cutoff_search: false
+  add_existing: false
+
+trakt:
+  client_id: #####################
+  client_secret: #####################
+#
+#  
+# Everything below this line is automatically generated
+  authorization:
+    access_token:
+    token_type:
+    expires_in:
+    refresh_token: 
+    scope: public
+    created_at:

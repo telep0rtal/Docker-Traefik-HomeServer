@@ -11,16 +11,10 @@ services:
     devices:
       - /dev/dri:/dev/dri # Requires Plex Pass
     ports:
-      - 32400:32400 
-      - 1900:1900/udp
-      - 3005:3005
-      - 5353:5353/udp
-      - 8324:8324
-      - 32410:32410/udp
-      - 32412:32412/udp
-      - 32413:32413/udp
-      - 32414:32414/udp
-      - 32469:32469
+      - target: 32400
+        published: 32400
+        protocol: tcp
+        mode: host
     volumes:
       - ./config:/config
       - $MEDIA:$MEDIA  
@@ -29,9 +23,11 @@ services:
       PUID: $PUID
       PGID: $PGID
       TP_THEME: ${THEME}
+      TP_ADDON: overseerr-side-menu
       DOCKER_MODS: ghcr.io/gilbn/theme.park:plex
       VERSION: docker
       PLEX_CLAIM: $PLEXTOKEN
+      ADVERTISE_IP: http://plex.$DOMAIN
     labels:
       traefik.enable: true
       traefik.http.routers.plex.rule: Host(`plex.$DOMAIN`)

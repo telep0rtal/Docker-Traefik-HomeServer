@@ -15,13 +15,13 @@ services:
       - ./config:/data
     environment:
       TZ: $TZ
-      DOCKER_HOST: dockersocket:2375
+      DOCKER_HOST: tcp://dockersocket:2375
     labels:
       traefik.enable: true
-      traefik.http.routers.audiobookshelf.tls: true         
+      traefik.http.routers.portainer.tls: true         
       traefik.http.routers.portainer.entrypoints: https
-      traefik.http.routers.portainer.rule: Host(`docker.$DOMAINNAME`)
-      traefik.http.routers.portainer.middlewares: chain-oauth@file
+      traefik.http.routers.portainer.rule: Host(`docker.$DOMAIN`)
+      traefik.http.routers.portainer.middlewares: oauth@file
       traefik.http.routers.portainer.service: portainer
       traefik.http.services.portainer.loadbalancer.server.port: 9000
     networks:
