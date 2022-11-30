@@ -1,4 +1,6 @@
-
+#
+# FreshRSS
+# 
 services:
 
   freshrss:
@@ -17,7 +19,7 @@ services:
       UMASK: $UMASK
     labels:
       traefik.enable: true
-      traefik.http.routers.freshrss.rule: Host(`freshrss.$DOMAIN`)
+      traefik.http.routers.freshrss.rule: Host(`fresh.$DOMAIN`)
       traefik.http.routers.freshrss.tls: true      
       traefik.http.routers.freshrss.entryPoints: https
       traefik.http.routers.freshrss.middlewares: oauth@file      

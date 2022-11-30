@@ -1,0 +1,32 @@
+#
+#
+#
+
+services:
+  homepage:
+    image: ghcr.io/benphelps/homepage:latest
+    container_name: homepage
+    hostname: homepage
+    restart: unless-stopped
+    networks: ["proxy","socket","internal"]
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - ./config:/app/public
+      - /storage:/storage
+    labels:
+      traefik.enable: true
+      traefik.http.routers.homepage.tls: true         
+      traefik.http.routers.homepage.entrypoints: https
+      traefik.http.routers.homepage.rule: Host(`$DOMAIN`) || Host(`www.$DOMAIN`)
+      traefik.http.routers.homepage.middlewares: oauth@file
+      traefik.http.routers.homepage.service: homepage
+      traefik.http.services.homepage.loadbalancer.server.port: 9443
+
+networks:
+  proxy:
+    external: true
+  socket:
+    external: true
+  internal: 
+    external: true              

@@ -1,0 +1,45 @@
+#
+# 1080p Sonarr Instance
+#
+services:
+  
+  sonarr:
+    image: randomninjaatk/sonarr-extended:latest
+    container_name: sonarr
+    hostname: sonarr
+    networks: ["proxy"]      
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - ./config:/config
+    environment:
+      TZ: $TZ
+      PUID: $PUID
+      PGID: $PGID
+      UMASK: $UMASK   
+      TP_THEME: $THEME
+      DOCKER_MODS: ghcr.io/gilbn/theme.park:sonarr
+      enableAutoConfig: true
+      enableRecyclarr: true
+      enableQueueCleaner: true
+      enableExtras: true
+      extrasType: all
+      extrasLanguages: en-US
+      extrasOfficialOnly: false
+      extrasSingle: false
+      extrasKodiCompatibility: false
+      plexUrl: http://plex:32400
+      plexToken: $PLEXTOKEN     
+    labels:
+      traefik.enable: true
+      traefik.http.routers.sonarr.rule: Host(`sonarr.$DOMAIN`)
+      traefik.http.routers.sonarr.tls: true      
+      traefik.http.routers.sonarr.entryPoints: https
+      traefik.http.routers.sonarr.middlewares: oauth@file      
+      traefik.http.routers.sonarr.service: sonarr
+      traefik.http.services.sonarr.loadbalancer.server.port: 8989
+
+networks:
+  proxy:
+    external: true

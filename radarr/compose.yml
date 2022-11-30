@@ -1,0 +1,45 @@
+#
+# 1080p Radarrr Instance
+#
+services:
+  
+  radarr:
+    image: randomninjaatk/radarr-extended:latest
+    container_name: radarr
+    hostname: radarr
+    restart: unless-stopped
+    networks: ["proxy"]      
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - ./config:/config
+    environment:
+      TZ: $TZ
+      PUID: $PUID
+      PGID: $PGID
+      UMASK: $UMASK    
+      TP_THEME: $THEME
+      DOCKER_MODS: ghcr.io/gilbn/theme.park:radarr
+      enableAutoConfig: true
+      enableRecyclarr: true
+      enableQueueCleaner: true
+      enableExtras: true
+      extrasType: all
+      extrasLanguages: en-US
+      extrasOfficialOnly: false
+      extrasSingle: false
+      extrasKodiCompatibility: false
+      plexUrl: http://plex:32400
+      plexToken: $PLEXTOKEN     
+    labels:
+      traefik.enable: true
+      traefik.http.routers.radarr.rule: Host(`radarr.$DOMAIN`)
+      traefik.http.routers.radarr.tls: true      
+      traefik.http.routers.radarr.entryPoints: https
+      traefik.http.routers.radarr.middlewares: oauth@file      
+      traefik.http.routers.radarr.service: radarr
+      traefik.http.services.radarr.loadbalancer.server.port: 7878
+
+networks:
+  proxy:
+    external: true

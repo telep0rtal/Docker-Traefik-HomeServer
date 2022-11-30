@@ -9,6 +9,7 @@ services:
     container_name: dozzle
     hostname: dozzle
     restart: unless-stopped
+    networks: ["socket","proxy"]      
     security_opt:
       - no-new-privileges:true
     environment:
@@ -20,9 +21,6 @@ services:
       traefik.http.routers.dozzle.rule: Host(`logs.$DOMAIN`)            
       traefik.http.routers.dozzle.service: dozzle
       traefik.http.services.dozzle.loadbalancer.server.port: 8080
-    networks:
-      proxy:
-      socket:
 
 networks:
   proxy:

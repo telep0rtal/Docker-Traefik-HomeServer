@@ -1,0 +1,42 @@
+#
+# 
+# Default qBittorrent username is admin and the default password is adminadmin
+services:
+  qbittorrent:
+    image: cr.hotio.dev/hotio/qbittorrent  
+    container_name: qbittorrent
+    hostname: qbittorrent
+    networks: ["proxy"]
+  #  devices:
+  #    - /dev/net/tun:/dev/net/tun
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - ./config:/config
+      - $TORRENTS:$TORRENTS      
+    environment:
+      TZ: $TZ
+      PUID: $PUID
+      PGID: $PGID
+      UMASK: $UMASK    
+      VPN_ENABLED: true
+      VPN_LAN_NETWORK: 192.168.1.0/24,192.168.2.0/24
+      VPN_CONF: wg0
+      VPN_IP_CHECK_DELAY: 5
+      VPN_IP_CHECK_EXIT: true
+      PRIVOXY_ENABLED: false
+    sysctls:
+      net.ipv4.conf.all.src_valid_mark: 1
+      net.ipv6.conf.all.disable_ipv6: 1
+    labels:
+      traefik.enable: true
+      traefik.http.routers.qbittorrent.rule: Host(`torrents.$DOMAIN`)
+      traefik.http.routers.qbittorrent.tls: true      
+      traefik.http.routers.qbittorrent.entryPoints: https
+      traefik.http.routers.qbittorrent.middlewares: oauth@file      
+      traefik.http.routers.qbittorrent.service: qbittorrent
+      traefik.http.services.qbittorrent.loadbalancer.server.port: 8080      
+
+networks:
+  proxy:
+    external: true

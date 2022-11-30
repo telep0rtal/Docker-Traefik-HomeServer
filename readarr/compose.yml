@@ -1,0 +1,35 @@
+#
+# Readarr Instance
+#
+services:
+  
+  readarr:
+    image:  lscr.io/linuxserver/readarr:latest
+    container_name: readarr
+    hostname: readarr
+    restart: unless-stopped
+    networks: ["proxy"]      
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - ./config:/config
+    environment:
+      TZ: $TZ
+      PUID: $PUID
+      PGID: $PGID
+      UMASK: $UMASK   
+      TP_THEME: $THEME
+      TP_ADDON: readarr-alt-logo
+      DOCKER_MODS: ghcr.io/gilbn/theme.park:readarr
+    labels:
+      traefik.enable: true
+      traefik.http.routers.readarr.rule: Host(`readarr.$DOMAIN`)
+      traefik.http.routers.readarr.tls: true      
+      traefik.http.routers.readarr.entryPoints: https
+      traefik.http.routers.readarr.middlewares: oauth@file      
+      traefik.http.routers.readarr.service: readarr
+      traefik.http.services.readarr.loadbalancer.server.port: 8787
+
+networks:
+  proxy:
+    external: true

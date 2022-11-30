@@ -1,0 +1,185 @@
+- Media:
+    - Plex:
+        icon: plex.png
+        href: http://plex.example.com
+        description: Media Server
+        server: komplex
+        container: plex
+        target: _blank                
+        widget:
+          type: plex
+          url: http://plex:32400
+          key: plextoken # see https://www.plexopedia.com/plex-media-server/general/plex-token/
+    - Audiobookshelf:
+        icon: audiobookshelf.png
+        href: http://audible.example.com
+        description: Audiobook Server
+        server: komplex        
+        container: audiobookshelf
+        target: _blank
+    - PodGrab:
+        icon: headphones.png
+        href: http://podcasts.example.com
+        description: Podcast Server
+        server: komplex        
+        container: podgrab
+        target: _blank
+    - Jellyfin:
+        icon: jellyfin.png
+        href: http://jelly.example.com
+        description: Media Server
+        server: komplex        
+        container: jellyfin
+        target: _blank                
+        widget:
+          type: jellyfin
+          url: http://jellyfin:8096
+          key: apikeyapikeyapikeyapikeyapikey        
+
+
+- Arr's:
+    - Overseerr:
+        icon: overseerr.png
+        href: http://requests.example.com
+        description: Request App
+        server: komplex        
+        container: overseerr
+        target: _blank                
+    - Tautulli:
+        icon: tautulli.png
+        href: http://stats.example.com
+        description: Plex Stats
+        server: komplex        
+        container: tautulli
+        target: _blank                      
+    - Radarr:
+        icon: radarr.png
+        href: http://radarr.example.com
+        description: Movies
+        server: komplex        
+        container: radarr
+        target: _blank                
+    - Radarr-4k:
+        icon: sonarr.png
+        href: http://radar.example.com
+        description: 4K Movies
+        server: komplex        
+        container: radar
+        target: _blank       
+    - Sonarr:
+        icon: sonarr.png
+        href: http://sonarr.example.com
+        description: TV Shows
+        server: komplex        
+        container: sonarr
+        target: _blank                
+    - Sonarr-4k:
+        icon: sonarr.png
+        href: http://sonar.example.com
+        description: 4K TV Shows
+        server: komplex        
+        container: sonar
+        target: _blank                 
+    - Readarr:
+        icon: readarr.png
+        href: http://readarr.example.com
+        description: Books & Audiobooks
+        server: komplex        
+        container: readarr
+        target: _blank                        
+    - Bazarr:
+        icon: bazarr.png
+        href: http://subs.example.com
+        description: Subtitles
+        server: komplex        
+        container: bazarr
+        target: _blank
+    - Prowlarr:
+        icon: prowlarr.png
+        href: http://prowlarr.example.com
+        description: Usenet Indexers
+        server: komplex        
+        container: prowlarr
+        target: _blank
+
+- Downloaders:
+    - Sabnzbd:
+        icon: sabnzbd.png
+        href: http://nzb.example.com
+        description: Usenet Downloader
+        server: komplex        
+        container: sabnzbd
+        target: _blank
+        widget:
+          type: sabnzbd
+          url: http://sabnzbd:8080
+          key: apikeyapikeyapikeyapikeyapikey
+    - Qbittorrent:
+        icon: qbittorrent.png
+        href: http://torrents.example.com
+        description: Torrent Client
+        server: komplex        
+        container: qbittorrent
+        target: _blank
+        widget:
+          type: qbittorrent
+          url: http://qbittorrent:8080
+          username: username
+          password: password                          
+
+- Utilities:
+    - Dozzle:
+        icon: dozzle.png
+        href: http://logs.example.com
+        description: Docker Container Logs
+        server: komplex        
+        container: dozzle
+        target: _blank
+    - Portainer:
+        icon: portainer.png
+        href: http://port.example.com
+        description: Docker Management UI
+        server: komplex        
+        container: portainer
+        target: _blank        
+    - Cockpit:
+        icon: cockpit.png
+        href: http://admin.example.com
+        description: Server Management UI
+        target: _blank
+    - VSCode:
+        icon: vscode.png
+        href: http://vscode.example.com
+        description: Browser IDE
+        target: _blank
+    - Scrutiny:
+        icon: scrutiny.png
+        href: http://drives.example.com
+        description: Hard Drive Management
+        server: komplex        
+        container: scrutiny
+        target: _blank
+
+- Network:
+    - Traefik:
+        icon: traefik.png
+        href: http://traefik.example.com
+        description: Reverse Proxy
+        server: komplex        
+        container: traefik
+        target: _blank
+    - Speedtest:
+        icon: librespeed.png
+        href: http://speed.example.com
+        description: Network SpeedTest
+        server: komplex        
+        container: speedtest
+        target: _blank
+    - AdGuard:
+        icon: adguard-home.png
+        href: http://adguard.example.com
+        server: komplex        
+        description: Adblocker
+        container: adguard
+        target: _blank
+                                        

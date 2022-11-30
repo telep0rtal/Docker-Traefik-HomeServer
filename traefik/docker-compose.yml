@@ -5,7 +5,9 @@ services:
   traefik:
     image: traefik:2.6
     container_name: traefik
+    hostname: traefik
     restart: unless-stopped
+    networks: ["proxy","socket"]      
     env_file: cloudflare.env  
     ports:
       - target: 80
@@ -15,11 +17,9 @@ services:
       - target: 443
         published: 443
         protocol: tcp
-        mode: host
+        mode: host            
     volumes:
       - $PWD:/etc/traefik    
-    environment:
-      DOCKER_HOST: dockersocket    
     labels:
       traefik.enable: true
       traefik.http.routers.traefik.tls: true        
@@ -27,15 +27,15 @@ services:
       traefik.http.routers.traefik.middlewares: oauth@file        
       traefik.http.routers.traefik.rule: Host(`traefik.$DOMAIN`)         
       traefik.http.routers.traefik.service: api@internal
-    networks:
-      proxy:
-      socket:      
+   
 
 
   oauth:
     image: thomseddon/traefik-forward-auth:latest
     container_name: oauth
+    hostname: oauth
     restart: always
+    networks: ["proxy"]      
     env_file: oauth.env     
     security_opt:
       - no-new-privileges:true   
@@ -57,8 +57,7 @@ services:
       traefik.http.routers.oauth.middlewares: oauth@file      
       traefik.http.routers.oauth.rule: Host(`oauth.$DOMAIN`)
       traefik.http.services.oauth.loadbalancer.server.port: 4181
-    networks:
-      proxy:
+
  
 networks:
   proxy:

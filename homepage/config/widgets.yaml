@@ -1,0 +1,30 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/en/configs/widgets
+- resources:
+    label: System
+    cpu: true
+    memory: true
+
+- resources:
+    label: Storage
+    disk: /storage
+
+- openmeteo:
+    label: Cloudcroft
+    latitude: 32.9573
+    longitude: 105.7425
+    units: imperial
+    cache: 5
+
+- search:
+    provider: duckduckgo
+    focus: true
+    target: _blank
+
+- datetime:
+    text_size: 2xl
+    format:
+      dateStyle: short
+      timeStyle: short
+      hour12: true    

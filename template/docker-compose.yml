@@ -1,16 +1,18 @@
-version: '3.5'
-
+#
+#
+#
 services:
   
   APPNAME:
-    image:
+    image: image/image
     container_name: APPNAME
+    hostname: APPNAME
+    networks: ["proxy","socket","internal"]      
     restart: unless-stopped
-    env_file: APPNAME.env  
     security_opt:
       - no-new-privileges:true
     volumes:
-      - $PWD:/config
+      - ./config:/config
       - $MEDIA:$MEDIA
       - $USENET:$USENET
       - $TORRENTS:$TORRENTS
@@ -22,17 +24,15 @@ services:
 #      TP_THEME: ${THEME} # change in global.env file for global theme changes
 #      DOCKER_MODS: ghcr.io/gilbn/theme.park:APPNAME
 # If docker socket volume needed, use below instead of mounting volume and also attach to socket network as well
-#      DOCKER_HOST: dockersocket
+#      DOCKER_HOST: tcp://dockersocket:2375
     labels:
       traefik.enable: true
-      traefik.http.routers.audiobookshelf.rule: Host(`audible.$DOMAIN`)
-      traefik.http.routers.audiobookshelf.tls: true      
-      traefik.http.routers.audiobookshelf.entryPoints: https
-      traefik.http.routers.audiobookshelf.middlewares: oauth@file      
-      traefik.http.routers.audiobookshelf.service: audiobookshelf
-      traefik.http.services.audiobookshelf.loadbalancer.server.port: 80
-    networks:
-      proxy:
+      traefik.http.routers.APPNAME.rule: Host(`APPNAME.$DOMAIN`)
+      traefik.http.routers.APPNAME.tls: true      
+      traefik.http.routers.APPNAME.entryPoints: https
+      traefik.http.routers.APPNAME.middlewares: oauth@file      
+      traefik.http.routers.APPNAME.service: APPNAME
+      traefik.http.services.APPNAME.loadbalancer.server.port: 80
 
 networks:
   proxy:

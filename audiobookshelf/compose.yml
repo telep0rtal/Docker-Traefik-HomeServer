@@ -5,6 +5,7 @@ services:
     container_name: audiobookshelf
     hostname: audiobookshelf
     restart: unless-stopped
+    networks: ["proxy"]    
     security_opt:
       - no-new-privileges:true
     volumes:
@@ -22,9 +23,7 @@ services:
       traefik.http.routers.audiobookshelf.middlewares: oauth@file      
       traefik.http.routers.audiobookshelf.service: audiobookshelf
       traefik.http.services.audiobookshelf.loadbalancer.server.port: 80
-    networks:
-      proxy:
-
+      
 networks:
   proxy:
     external: true

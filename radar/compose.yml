@@ -1,0 +1,46 @@
+#
+# 4K Radarr Instance
+#
+services:
+  
+  radar:
+    image: randomninjaatk/radarr-extended:latest
+    container_name: radar
+    hostname: radar
+    networks: ["proxy"]      
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - ./config:/config
+    environment:
+      TZ: $TZ
+      PUID: $PUID
+      PGID: $PGID
+      UMASK: $UMASK    
+      TP_THEME: $THEME
+      TP_ADDON: radarr-4k-logo
+      DOCKER_MODS: ghcr.io/gilbn/theme.park:radarr
+      enableAutoConfig: true
+      enableRecyclarr: true
+      enableQueueCleaner: true
+      enableExtras: true
+      extrasType: all
+      extrasLanguages: en-US
+      extrasOfficialOnly: false
+      extrasSingle: false
+      extrasKodiCompatibility: false
+      plexUrl: http://plex:32400
+      plexToken: $PLEXTOKEN     
+    labels:
+      traefik.enable: true
+      traefik.http.routers.radar.rule: Host(`radar.$DOMAIN`)
+      traefik.http.routers.radar.tls: true      
+      traefik.http.routers.radar.entryPoints: https
+      traefik.http.routers.radar.middlewares: oauth@file      
+      traefik.http.routers.radar.service: radar
+      traefik.http.services.radar.loadbalancer.server.port: 7878
+
+networks:
+  proxy:
+    external: true

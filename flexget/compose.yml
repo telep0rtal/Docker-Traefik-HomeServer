@@ -10,6 +10,9 @@ services:
     container_name: flexget
     hostname: flexget
     restart: unless-stopped
+    networks: ["proxy"]      
+    security_opt:
+      - no-new-privileges:true   
     volumes:
       - ./config:/config
       - $TORRENTS:$TORRENTS              
@@ -25,8 +28,6 @@ services:
       traefik.http.routers.flexget.middlewares: oauth@file      
       traefik.http.routers.flexget.service: flexget
       traefik.http.services.flexget.loadbalancer.server.port: 5050
-    networks:
-      proxy:
 
 networks:
   proxy:

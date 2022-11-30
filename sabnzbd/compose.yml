@@ -1,0 +1,34 @@
+#
+# Sabnzbd Instance
+#
+services:
+  
+  sabnzbd:
+    image: lscr.io/linuxserver/sabnzbd:latest
+    container_name: sabnzbd
+    hostname: sabnzbd
+    restart: unless-stopped
+    networks: ["proxy"]      
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - ./config:/config
+      - $USENET:$USENET
+    environment:
+      TZ: $TZ
+      PUID: $PUID
+      PGID: $PGID
+      TP_THEME: $THEME
+      DOCKER_MODS: ghcr.io/gilbn/theme.park:sabnzbd
+    labels:
+      traefik.enable: true
+      traefik.http.routers.sabnzbd.rule: Host(`nzb.$DOMAIN`)
+      traefik.http.routers.sabnzbd.tls: true      
+      traefik.http.routers.sabnzbd.entryPoints: https
+      traefik.http.routers.sabnzbd.middlewares: oauth@file      
+      traefik.http.routers.sabnzbd.service: sabnzbd
+      traefik.http.services.sabnzbd.loadbalancer.server.port: 8080
+
+networks:
+  proxy:
+    external: true

@@ -7,6 +7,7 @@ services:
     container_name: podgrab
     hostname: podgrab
     restart: unless-stopped
+    networks: ["proxy"]      
     security_opt:
       - no-new-privileges:true    
     volumes:
@@ -22,8 +23,6 @@ services:
       traefik.http.routers.podgrab.middlewares: oauth@file      
       traefik.http.routers.podgrab.service: podgrab
       traefik.http.services.podgrab.loadbalancer.server.port: 8080
-    networks:
-      proxy:
 
 networks:
   proxy:

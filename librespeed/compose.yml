@@ -1,0 +1,35 @@
+#
+#
+#
+services:
+  
+  librespeed:
+    image:  lscr.io/linuxserver/librespeed
+    container_name: librespeed
+    hostname: librespeed
+    restart: unless-stopped
+    networks: ["proxy"]      
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - ./config:/config
+    environment:
+      TZ: $TZ
+      PUID: $PUID
+      PGID: $PGID
+      UMASK: $UMASK
+      CUSTOM_RESULTS: true    
+      TP_THEME: $THEME
+      DOCKER_MODS: ghcr.io/gilbn/theme.park:librespeed
+    labels:
+      traefik.enable: true
+      traefik.http.routers.librespeed.rule: Host(`speed.$DOMAIN`)
+      traefik.http.routers.librespeed.tls: true      
+      traefik.http.routers.librespeed.entryPoints: https
+      traefik.http.routers.librespeed.middlewares: oauth@file      
+      traefik.http.routers.librespeed.service: librespeed
+      traefik.http.services.librespeed.loadbalancer.server.port: 80
+
+networks:
+  proxy:
+    external: true

@@ -1,0 +1,33 @@
+#
+# Tautulli is a python based web application for monitoring, analytics and notifications for Plex Media Server.
+#
+services:
+  
+  tautulli:
+    image:  lscr.io/linuxserver/tautulli:latest
+    container_name: tautulli
+    hostname: tautulli
+    networks: ["proxy"]      
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    volumes:
+      - ./config:/config
+    environment:
+      TZ: $TZ
+      PUID: $PUID
+      PGID: $PGID    
+      TP_THEME: $THEME
+      DOCKER_MODS: ghcr.io/gilbn/theme.park:tautulli
+    labels:
+      traefik.enable: true
+      traefik.http.routers.tautulli.rule: Host(`stats.$DOMAIN`)
+      traefik.http.routers.tautulli.tls: true      
+      traefik.http.routers.tautulli.entryPoints: https
+      traefik.http.routers.tautulli.middlewares: oauth@file      
+      traefik.http.routers.tautulli.service: tautulli
+      traefik.http.services.tautulli.loadbalancer.server.port: 8181
+
+networks:
+  proxy:
+    external: true

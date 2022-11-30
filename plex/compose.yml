@@ -6,10 +6,11 @@ services:
     container_name: plex
     hostname: plex
     restart: unless-stopped
+    networks: ["proxy"]      
     security_opt:
       - no-new-privileges:true
-    devices:
-      - /dev/dri:/dev/dri # Requires Plex Pass
+#    devices:
+#      - /dev/dri:/dev/dri # Requires Plex Pass
     ports:
       - target: 32400
         published: 32400
@@ -35,8 +36,6 @@ services:
       traefik.http.routers.plex.entryPoints: https     
       traefik.http.routers.plex.service: plex
       traefik.http.services.plex.loadbalancer.server.port: 32400
-    networks:
-      proxy:
 
 networks:
   proxy:

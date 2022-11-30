@@ -9,9 +9,12 @@ services:
     container_name: olivetin
     hostname: olivetin
     restart: unless-stopped
+    networks: ["proxy"]      
+    security_opt:
+      - no-new-privileges:true    
     user: root
     volumes:
-      - ./config:/config # replace host path or volume as needed
+      - ./config:/config
       - /var/run/docker.sock:/var/run/docker.sock
     labels:
       traefik.enable: true
@@ -21,8 +24,6 @@ services:
       traefik.http.routers.olivetin.middlewares: oauth@file      
       traefik.http.routers.olivetin.service: olivetin
       traefik.http.services.olivetin.loadbalancer.server.port: 1337
-    networks:
-      proxy:      
 
 networks:
   proxy:

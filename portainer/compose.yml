@@ -8,6 +8,7 @@ services:
     container_name: portainer
     hostname: portainer
     restart: unless-stopped
+    networks: ["socket","proxy"]     
     command: -H tcp://dockersocket:2375
     security_opt:
       - no-new-privileges:true
@@ -23,10 +24,7 @@ services:
       traefik.http.routers.portainer.rule: Host(`docker.$DOMAIN`)
       traefik.http.routers.portainer.middlewares: oauth@file
       traefik.http.routers.portainer.service: portainer
-      traefik.http.services.portainer.loadbalancer.server.port: 9000
-    networks:
-      proxy:
-      socket:
+      traefik.http.services.portainer.loadbalancer.server.port: 9443
 
 networks:
   proxy:

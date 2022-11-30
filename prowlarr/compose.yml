@@ -8,6 +8,7 @@ services:
     container_name: prowlarr
     hostname: prowlarr
     restart: unless-stopped
+    networks: ["proxy"]      
     security_opt:
       - no-new-privileges:true
     volumes:
@@ -26,8 +27,6 @@ services:
       traefik.http.routers.prowlarr.middlewares: oauth@file      
       traefik.http.routers.prowlarr.service: prowlarr
       traefik.http.services.prowlarr.loadbalancer.server.port: 9696
-    networks:
-      proxy:
 
 networks:
   proxy:

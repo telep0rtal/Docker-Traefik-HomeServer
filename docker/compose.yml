@@ -1,6 +1,5 @@
 #
-#   Docker socket proxy to add an extra layer between internet accessible applications
-#   and the docker.socket
+#
 #
 services:
 
@@ -9,6 +8,7 @@ services:
     container_name: dockersocket
     hostname: dockersocket
     restart: unless-stopped
+    networks: ["socket"]      
     privileged: true        
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -39,16 +39,13 @@ services:
       SYSTEM: 0
       TASKS: 1
       VOLUMES: 1
-    networks:
-      socket:
-#
-#   Docker Cleanup Container. 
-#
+
   dockergc:
     image: clockworksoul/docker-gc-cron:latest
     container_name: dockergc
     hostname: dockergc
     restart: unless-stopped
+    networks: ["socket"]    
     security_opt:
       - no-new-privileges:true   
     volumes:
@@ -62,8 +59,6 @@ services:
       CLEAN_UP_VOLUMES: 1
       TZ: $TZ
       DOCKER_HOST: tcp://dockersocket:2375
-    networks:
-      socket:      
 
 networks:
   socket:

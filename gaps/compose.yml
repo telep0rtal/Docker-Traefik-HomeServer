@@ -9,8 +9,9 @@ services:
     container_name: gaps
     hostname: gaps
     restart: unless-stopped
+    networks: ["proxy"]      
     security_opt:
-      - no-new-privileges:true     
+      - no-new-privileges:true  
     expose:
       - "32400"       
     volumes:
@@ -27,8 +28,6 @@ services:
       traefik.http.routers.gaps.middlewares: oauth@file      
       traefik.http.routers.gaps.service: gaps
       traefik.http.services.gaps.loadbalancer.server.port: 8484
-    networks:
-      proxy:
 
 networks:
   proxy:

@@ -8,7 +8,11 @@ services:
   homebox:
     image: ghcr.io/hay-kot/homebox:latest
     container_name: homebox
-    restart: always
+    hostname: homebox
+    restart: unless-stopped
+    networks: ["proxy"]      
+    security_opt:
+      - no-new-privileges:true    
     environment:
     - HBOX_LOG_LEVEL=info
     - HBOX_LOG_FORMAT=text
@@ -23,8 +27,6 @@ services:
       traefik.http.routers.homebox.middlewares: oauth@file      
       traefik.http.routers.homebox.service: homebox
       traefik.http.services.homebox.loadbalancer.server.port: 7745
-    networks:
-      proxy:
 
 networks:
   proxy:

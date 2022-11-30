@@ -8,6 +8,7 @@ services:
     container_name: mealie
     hostname: mealie
     restart: unless-stopped
+    networks: ["proxy"]      
     security_opt:
       - no-new-privileges:true
     volumes:
@@ -30,8 +31,6 @@ services:
       traefik.http.routers.mealie.middlewares: oauth@file      
       traefik.http.routers.mealie.service: mealie
       traefik.http.services.mealie.loadbalancer.server.port: 80
-    networks:
-      proxy:
 
 networks:
   proxy:

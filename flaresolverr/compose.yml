@@ -9,6 +9,7 @@ services:
     container_name: flaresolverr
     hostname: flaresolverr   
     restart: unless-stopped
+    networks: ["proxy"]      
     security_opt:
       - no-new-privileges:true
     environment:
@@ -29,8 +30,6 @@ services:
       traefik.http.routers.flaresolverr.middlewares: oauth@file
       traefik.http.routers.flaresolverr.service: flaresolverr
       traefik.http.services.flaresolverr.loadbalancer.server.port: 8191
-    networks:
-      proxy:
 
 networks:
   proxy:
